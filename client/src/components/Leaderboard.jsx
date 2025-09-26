@@ -72,8 +72,24 @@ export default function Leaderboard() {
 
   const sortedScores = useMemo(() => {
     const list = Array.isArray(state.scores) ? state.scores : [];
-    return [...list].sort((a, b) => toSeconds(a?.time) - toSeconds(b?.time));
-  }, [state.scores, toSeconds]);
+    return [...list].sort((a, b) => {
+        // Sort by completion time (asc)
+        const timeDiff = toSeconds(a?.time) - toSeconds(b?.time);
+        if (timeDiff !== 0) return timeDiff;
+        // Tie-break: earlier submission first (uses createdAt)
+        if (a.createdAt && b.createdAt) {
+          return new Date(a.createdAt) - new Date(b.createdAt);
+        }
+        // Additional tie-break by difficulty (if present, harder first)
+        if (a.difficulty && b.difficulty) {
+          // If difficulty is a string like "Easy", "Medium", "Hard", use custom sort
+          const order = { "Easy": 1, "Medium": 2, "Hard": 3 };
+          return order[b.difficulty] - order[a.difficulty]; // descending
+        }
+        // Final fallback: alphabetical by name
+        return (a.name || "").localeCompare(b.name || "");
+      });
+    }, [state.scores]);
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 p-6">
