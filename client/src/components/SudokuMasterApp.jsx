@@ -116,9 +116,9 @@ export default function SudokuMasterApp() {
     if (state.isWin) return;
     timerRef.current = setInterval(() => {
       if (isMounted.current) {
-        dispatch({ type: "SET_TIME", payload: Math.floor((Date.now() - state.startTime) / 100) });
+        dispatch({ type: "SET_TIME", payload: Math.floor((Date.now() - state.startTime) / 1000) });
       }
-    }, 100);
+    }, 1000);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
