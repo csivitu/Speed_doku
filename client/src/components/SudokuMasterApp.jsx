@@ -164,7 +164,7 @@ export default function SudokuMasterApp() {
       <div className="grid grid-cols-9 bg-gray-700 p-1 rounded">
         {state.board.map((row, i) =>
           row.map((cell, j) => {
-            let borderClass = "w-14 h-14 text-center text-xl border bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 ";
+            let borderClass = "w-14 h-14 text-center text-xl border bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:z-10";
             borderClass += "border-gray-400 ";
             if (j % 3 === 0) borderClass += "border-l-4 ";
             if (i % 3 === 0) borderClass += "border-t-4 ";
